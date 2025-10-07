@@ -1,31 +1,25 @@
 export type ProfileType = 'student' | 'teacher' | 'administrative';
 
-export interface Student {
-  id: string;
-  fullName: string;
-  matricula: string;
-  degree: string;
-  group: string;
-  institutionalEmail: string;
-  phoneNumber: string;
+// API Response types
+export interface Teacher {
+  clave_docente: string;
+  nombre: string;
+  paterno: string;
+  materno: string;
+  telefono_celular: string;
+  gradoimparte: string;
 }
 
-export interface Teacher {
-  id: string;
-  fullName: string;
+export interface Student {
+  nombre: string;
   matricula: string;
-  teachesAt: 'MICU' | 'LICU' | 'BOTH';
-  institutionalEmail: string;
-  phoneNumber: string;
+  telefono: string;
 }
 
 export interface Administrative {
-  id: string;
-  fullName: string;
-  employeeId: string;
-  department: string;
-  institutionalEmail: string;
-  phoneNumber: string;
+  nombre: string;
+  matricula: string;
+  telefono: string;
 }
 
 export type UserData = Student | Teacher | Administrative;

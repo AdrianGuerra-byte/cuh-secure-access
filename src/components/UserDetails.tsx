@@ -24,40 +24,37 @@ const UserDetails = ({ profileType, userData, onBack, onResetPassword, isResetti
     }
   };
 
-  const renderSpecificInfo = () => {
-    if (profileType === 'student') {
-      const student = userData as Student;
-      return (
-        <>
-          <InfoRow label="Licenciatura" value={student.degree} />
-          <InfoRow label="Grupo" value={student.group} />
-          <InfoRow label="Matrícula" value={student.matricula} />
-        </>
-      );
-    }
-    
+  const getFullName = () => {
     if (profileType === 'teacher') {
       const teacher = userData as Teacher;
-      const teachesLabel = teacher.teachesAt === 'BOTH' 
-        ? 'Licenciatura (LICU) y Maestría (MICU)'
-        : teacher.teachesAt === 'MICU' 
-        ? 'Maestría (MICU)'
-        : 'Licenciatura (LICU)';
-      
+      return `${teacher.nombre} ${teacher.paterno} ${teacher.materno}`;
+    }
+    return (userData as Student | Administrative).nombre;
+  };
+
+  const getPhoneNumber = () => {
+    if (profileType === 'teacher') {
+      return (userData as Teacher).telefono_celular;
+    }
+    return (userData as Student | Administrative).telefono;
+  };
+
+  const renderSpecificInfo = () => {
+    if (profileType === 'teacher') {
+      const teacher = userData as Teacher;
       return (
         <>
-          <InfoRow label="Imparte clases en" value={teachesLabel} />
-          <InfoRow label="Matrícula" value={teacher.matricula} />
+          <InfoRow label="Imparte clases en" value={teacher.gradoimparte} />
+          <InfoRow label="Clave Docente" value={teacher.clave_docente} />
         </>
       );
     }
     
-    if (profileType === 'administrative') {
-      const admin = userData as Administrative;
+    if (profileType === 'student' || profileType === 'administrative') {
+      const user = userData as Student | Administrative;
       return (
         <>
-          <InfoRow label="Departamento" value={admin.department} />
-          <InfoRow label="ID de Empleado" value={admin.employeeId} />
+          <InfoRow label="Matrícula" value={user.matricula} />
         </>
       );
     }
@@ -83,7 +80,7 @@ const UserDetails = ({ profileType, userData, onBack, onResetPassword, isResetti
             </div>
             <div className="flex-1">
               <h2 className="text-2xl font-semibold text-foreground mb-2">
-                {userData.fullName}
+                {getFullName()}
               </h2>
               <Badge variant="secondary" className="text-sm">
                 {profileType === 'student' ? 'Alumno' : profileType === 'teacher' ? 'Docente' : 'Administrativo'}
@@ -96,14 +93,8 @@ const UserDetails = ({ profileType, userData, onBack, onResetPassword, isResetti
             {renderSpecificInfo()}
             
             <InfoRow 
-              label="Correo Institucional" 
-              value={userData.institutionalEmail}
-              icon={<Mail className="w-4 h-4" />}
-            />
-            
-            <InfoRow 
               label="Número Telefónico" 
-              value={userData.phoneNumber}
+              value={getPhoneNumber()}
               icon={<Phone className="w-4 h-4" />}
             />
           </div>
@@ -119,7 +110,7 @@ const UserDetails = ({ profileType, userData, onBack, onResetPassword, isResetti
               {isResetting ? 'Restableciendo contraseña...' : 'Restablecer contraseña'}
             </Button>
             <p className="text-xs text-muted-foreground text-center mt-3">
-              La nueva contraseña será enviada al correo institucional
+              La nueva contraseña será enviada por WhatsApp
             </p>
           </div>
         </div>

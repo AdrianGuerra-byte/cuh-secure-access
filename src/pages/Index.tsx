@@ -14,6 +14,7 @@ const Index = () => {
   const [currentView, setCurrentView] = useState<ViewState>('profile-selection');
   const [selectedProfile, setSelectedProfile] = useState<ProfileType | null>(null);
   const [userData, setUserData] = useState<UserData | null>(null);
+  const [resetPhoneNumber, setResetPhoneNumber] = useState<string>('');
   const [isLoading, setIsLoading] = useState(false);
   const [isResetting, setIsResetting] = useState(false);
 
@@ -30,11 +31,11 @@ const Index = () => {
 
       // Call appropriate API based on profile type
       if (selectedProfile === 'student') {
-        result = await ApiService.searchStudent(query);
+        result = await ApiService.searchStudent(query, searchType);
       } else if (selectedProfile === 'teacher') {
-        result = await ApiService.searchTeacher(query);
+        result = await ApiService.searchTeacher(query, searchType);
       } else if (selectedProfile === 'administrative') {
-        result = await ApiService.searchAdministrative(query);
+        result = await ApiService.searchAdministrative(query, searchType);
       }
 
       if (result) {
@@ -58,13 +59,10 @@ const Index = () => {
     setIsResetting(true);
 
     try {
-      const result = await ApiService.resetPassword(
-        selectedProfile,
-        userData.id,
-        userData.institutionalEmail
-      );
+      const result = await ApiService.resetPassword(selectedProfile, userData);
 
       if (result.success) {
+        setResetPhoneNumber(result.phoneNumber);
         setCurrentView('success');
         toast.success(result.message);
       } else {
@@ -93,6 +91,7 @@ const Index = () => {
     setCurrentView('profile-selection');
     setSelectedProfile(null);
     setUserData(null);
+    setResetPhoneNumber('');
   };
 
   return (
@@ -141,9 +140,9 @@ const Index = () => {
           />
         )}
 
-        {currentView === 'success' && userData && (
+        {currentView === 'success' && resetPhoneNumber && (
           <SuccessMessage
-            email={userData.institutionalEmail}
+            phoneNumber={resetPhoneNumber}
             onReset={handleReset}
           />
         )}

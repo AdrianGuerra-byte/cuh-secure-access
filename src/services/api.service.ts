@@ -1,95 +1,128 @@
 import { ProfileType, Student, Teacher, Administrative } from '@/types/user.types';
 
-/**
- * API Service for backend integration
- * This service is prepared for future API integration
- * Currently returns mock data for frontend development
- */
-
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || '/api';
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000/api/v1';
 
 export class ApiService {
   /**
-   * Search for a student by name or matricula
+   * Search for a student or administrative by name or matricula
    */
-  static async searchStudent(query: string): Promise<Student | null> {
-    // TODO: Implement actual API call
-    // const response = await fetch(`${API_BASE_URL}/students/search?q=${encodeURIComponent(query)}`);
-    // return response.json();
-    
-    // Mock data for development
-    return {
-      id: '1',
-      fullName: 'Juan Pérez García',
-      matricula: 'EST2024001',
-      degree: 'Ingeniería en Sistemas Computacionales',
-      group: 'ISC-8A',
-      institutionalEmail: 'juan.perez@cuh.edu.mx',
-      phoneNumber: '+52 771 234 5678',
-    };
+  static async searchStudent(query: string, searchType: 'name' | 'id'): Promise<Student | null> {
+    try {
+      const params = new URLSearchParams();
+      if (searchType === 'id') {
+        params.append('matricula', query);
+      } else {
+        params.append('nombre', query);
+      }
+
+      const response = await fetch(`${API_BASE_URL}/usuarios?${params.toString()}`);
+      
+      if (!response.ok) {
+        if (response.status === 404) return null;
+        throw new Error('Error al buscar usuario');
+      }
+
+      const usuarios = await response.json();
+      return usuarios.length > 0 ? usuarios[0] : null;
+    } catch (error) {
+      console.error('Error searching student:', error);
+      throw error;
+    }
   }
 
   /**
-   * Search for a teacher by name or matricula
+   * Search for a teacher by name or clave_docente
    */
-  static async searchTeacher(query: string): Promise<Teacher | null> {
-    // TODO: Implement actual API call
-    // const response = await fetch(`${API_BASE_URL}/teachers/search?q=${encodeURIComponent(query)}`);
-    // return response.json();
-    
-    // Mock data for development
-    return {
-      id: '1',
-      fullName: 'Dra. María López Hernández',
-      matricula: 'DOC2020045',
-      teachesAt: 'BOTH',
-      institutionalEmail: 'maria.lopez@cuh.edu.mx',
-      phoneNumber: '+52 771 876 5432',
-    };
+  static async searchTeacher(query: string, searchType: 'name' | 'id'): Promise<Teacher | null> {
+    try {
+      const params = new URLSearchParams();
+      if (searchType === 'id') {
+        params.append('clave_docente', query);
+      } else {
+        params.append('nombre', query);
+      }
+
+      const response = await fetch(`${API_BASE_URL}/docentes?${params.toString()}`);
+      
+      if (!response.ok) {
+        if (response.status === 404) return null;
+        throw new Error('Error al buscar docente');
+      }
+
+      const docentes = await response.json();
+      return docentes.length > 0 ? docentes[0] : null;
+    } catch (error) {
+      console.error('Error searching teacher:', error);
+      throw error;
+    }
   }
 
   /**
-   * Search for administrative staff by name or employee ID
+   * Search for administrative staff by name or matricula
    */
-  static async searchAdministrative(query: string): Promise<Administrative | null> {
-    // TODO: Implement actual API call
-    // const response = await fetch(`${API_BASE_URL}/administrative/search?q=${encodeURIComponent(query)}`);
-    // return response.json();
-    
-    // Mock data for development
-    return {
-      id: '1',
-      fullName: 'Carlos Ramírez Sánchez',
-      employeeId: 'ADM2019023',
-      department: 'Servicios Escolares',
-      institutionalEmail: 'carlos.ramirez@cuh.edu.mx',
-      phoneNumber: '+52 771 345 6789',
-    };
+  static async searchAdministrative(query: string, searchType: 'name' | 'id'): Promise<Administrative | null> {
+    try {
+      const params = new URLSearchParams();
+      if (searchType === 'id') {
+        params.append('matricula', query);
+      } else {
+        params.append('nombre', query);
+      }
+
+      const response = await fetch(`${API_BASE_URL}/usuarios?${params.toString()}`);
+      
+      if (!response.ok) {
+        if (response.status === 404) return null;
+        throw new Error('Error al buscar usuario');
+      }
+
+      const usuarios = await response.json();
+      return usuarios.length > 0 ? usuarios[0] : null;
+    } catch (error) {
+      console.error('Error searching administrative:', error);
+      throw error;
+    }
   }
 
   /**
-   * Reset password and send email via MailGun
+   * Reset password and send via WhatsApp
    */
   static async resetPassword(
     profileType: ProfileType,
-    userId: string,
-    email: string
-  ): Promise<{ success: boolean; message: string }> {
-    // TODO: Implement actual API call to backend that handles:
-    // 1. Password reset in database (set to "12345678Az*")
-    // 2. Email sending via MailGun with new password
-    
-    // const response = await fetch(`${API_BASE_URL}/password/reset`, {
-    //   method: 'POST',
-    //   headers: { 'Content-Type': 'application/json' },
-    //   body: JSON.stringify({ profileType, userId, email }),
-    // });
-    // return response.json();
-    
-    // Mock success response for development
-    return {
-      success: true,
-      message: 'Contraseña restablecida exitosamente. Se ha enviado un correo con la nueva contraseña.',
-    };
+    userData: Student | Teacher | Administrative
+  ): Promise<{ success: boolean; message: string; phoneNumber: string }> {
+    try {
+      let response;
+      
+      if (profileType === 'teacher') {
+        const teacher = userData as Teacher;
+        response = await fetch(`${API_BASE_URL}/docentes/${teacher.clave_docente}/password`, {
+          method: 'PATCH',
+        });
+      } else {
+        const user = userData as Student | Administrative;
+        response = await fetch(`${API_BASE_URL}/usuarios/${user.matricula}/password`, {
+          method: 'PATCH',
+        });
+      }
+
+      if (!response.ok) {
+        throw new Error('Error al restablecer contraseña');
+      }
+
+      const result = await response.json();
+      const phoneNumber = profileType === 'teacher' 
+        ? (userData as Teacher).telefono_celular 
+        : (userData as Student | Administrative).telefono;
+
+      return {
+        success: true,
+        message: result.message || 'Contraseña restablecida exitosamente.',
+        phoneNumber,
+      };
+    } catch (error) {
+      console.error('Error resetting password:', error);
+      throw error;
+    }
   }
 }

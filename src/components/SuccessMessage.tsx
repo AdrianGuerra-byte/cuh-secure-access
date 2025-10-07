@@ -1,13 +1,13 @@
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { CheckCircle2, Mail } from 'lucide-react';
+import { CheckCircle2, MessageCircle } from 'lucide-react';
 
 interface SuccessMessageProps {
-  email: string;
+  phoneNumber: string;
   onReset: () => void;
 }
 
-const SuccessMessage = ({ email, onReset }: SuccessMessageProps) => {
+const SuccessMessage = ({ phoneNumber, onReset }: SuccessMessageProps) => {
   return (
     <Card className="p-8 max-w-2xl mx-auto text-center">
       <div className="space-y-6">
@@ -26,13 +26,13 @@ const SuccessMessage = ({ email, onReset }: SuccessMessageProps) => {
 
         <Card className="p-6 bg-accent/30">
           <div className="flex items-start space-x-3">
-            <Mail className="w-5 h-5 text-primary mt-1 flex-shrink-0" />
+            <MessageCircle className="w-5 h-5 text-primary mt-1 flex-shrink-0" />
             <div className="text-left">
               <p className="text-sm font-medium text-foreground mb-2">
-                Correo enviado a:
+                Mensaje enviado por WhatsApp a:
               </p>
               <p className="text-base text-primary font-semibold">
-                {email}
+                {phoneNumber}
               </p>
             </div>
           </div>
@@ -40,8 +40,8 @@ const SuccessMessage = ({ email, onReset }: SuccessMessageProps) => {
 
         <div className="bg-muted/50 p-4 rounded-lg">
           <p className="text-sm text-muted-foreground">
-            <strong className="text-foreground">Importante:</strong> Por favor, revise su bandeja de entrada 
-            (y carpeta de spam) para encontrar el correo con su nueva contraseña temporal. 
+            <strong className="text-foreground">Importante:</strong> Por favor, revise su WhatsApp para 
+            encontrar el mensaje con su nueva contraseña temporal. 
             Se recomienda cambiar esta contraseña después del primer inicio de sesión.
           </p>
         </div>
