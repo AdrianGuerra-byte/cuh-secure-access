@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { toast } from 'sonner';
+import { Link } from 'react-router-dom';
 import cuhLogo from '@/assets/cuh-logo.png';
 import ProfileSelector from '@/components/ProfileSelector';
 import SearchForm, { TeacherNameData } from '@/components/SearchForm';
@@ -7,6 +8,8 @@ import UserDetails from '@/components/UserDetails';
 import SuccessMessage from '@/components/SuccessMessage';
 import { ProfileType, UserData } from '@/types/user.types';
 import { ApiService } from '@/services/api.service';
+import { Button } from '@/components/ui/button';
+import { Users } from 'lucide-react';
 
 type ViewState = 'profile-selection' | 'search' | 'user-details' | 'success';
 
@@ -116,18 +119,26 @@ const Index = () => {
       {/* Header */}
       <header className="bg-card border-b border-border">
         <div className="container mx-auto px-4 py-6">
-          <div className="flex items-center justify-center space-x-4">
-            <img 
-              src={cuhLogo} 
-              alt="Centro Universitario Hidalguense" 
-              className="h-16 object-contain"
-            />
-            <div className="text-center">
-              <h1 className="text-3xl font-bold text-primary">SIREC</h1>
-              <p className="text-sm text-muted-foreground">
-                Sistema Integral de Recuperación de Credenciales
-              </p>
+          <div className="flex items-center justify-between">
+            <div className="flex items-center space-x-4">
+              <img 
+                src={cuhLogo} 
+                alt="Centro Universitario Hidalguense" 
+                className="h-16 object-contain"
+              />
+              <div className="text-center">
+                <h1 className="text-3xl font-bold text-primary">SIREC</h1>
+                <p className="text-sm text-muted-foreground">
+                  Sistema Integral de Recuperación de Credenciales
+                </p>
+              </div>
             </div>
+            <Link to="/sige">
+              <Button variant="outline" size="sm">
+                <Users className="h-4 w-4 mr-2" />
+                SIGE
+              </Button>
+            </Link>
           </div>
         </div>
       </header>
