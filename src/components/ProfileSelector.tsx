@@ -1,5 +1,5 @@
 import { Card } from '@/components/ui/card';
-import { GraduationCap, Users, Briefcase } from 'lucide-react';
+import { GraduationCap, BookOpen, Briefcase } from 'lucide-react';
 import { ProfileType } from '@/types/user.types';
 
 interface ProfileSelectorProps {
@@ -18,7 +18,7 @@ const ProfileSelector = ({ onSelectProfile }: ProfileSelectorProps) => {
       type: 'teacher' as ProfileType,
       title: 'Docente',
       description: 'Profesor de licenciatura o maestría',
-      icon: Users,
+      icon: BookOpen,
     },
     {
       type: 'administrative' as ProfileType,

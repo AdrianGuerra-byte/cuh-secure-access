@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { toast } from 'sonner';
 import cuhLogo from '@/assets/cuh-logo.png';
 import ProfileSelector from '@/components/ProfileSelector';
-import SearchForm from '@/components/SearchForm';
+import SearchForm, { TeacherNameData } from '@/components/SearchForm';
 import UserDetails from '@/components/UserDetails';
 import SuccessMessage from '@/components/SuccessMessage';
 import { ProfileType, UserData } from '@/types/user.types';
@@ -23,7 +23,7 @@ const Index = () => {
     setCurrentView('search');
   };
 
-  const handleSearch = async (query: string, searchType: 'name' | 'id') => {
+  const handleSearch = async (query: string | TeacherNameData, searchType: 'name' | 'id') => {
     setIsLoading(true);
     
     try {
@@ -31,11 +31,11 @@ const Index = () => {
 
       // Call appropriate API based on profile type
       if (selectedProfile === 'student') {
-        result = await ApiService.searchStudent(query, searchType);
+        result = await ApiService.searchStudent(query as string, searchType);
       } else if (selectedProfile === 'teacher') {
         result = await ApiService.searchTeacher(query, searchType);
       } else if (selectedProfile === 'administrative') {
-        result = await ApiService.searchAdministrative(query, searchType);
+        result = await ApiService.searchAdministrative(query as string, searchType);
       }
 
       if (result) {
@@ -56,23 +56,33 @@ const Index = () => {
   const handleResetPassword = async () => {
     if (!userData || !selectedProfile) return;
 
+    console.log('handleResetPassword - Starting reset process');
+    console.log('handleResetPassword - Selected Profile:', selectedProfile);
+    console.log('handleResetPassword - User Data:', userData);
+
     setIsResetting(true);
 
     try {
       const result = await ApiService.resetPassword(selectedProfile, userData);
 
+      console.log('handleResetPassword - API Result:', result);
+
       if (result.success) {
+        console.log('handleResetPassword - Success! Setting phone number and changing view');
         setResetPhoneNumber(result.phoneNumber);
         setCurrentView('success');
         toast.success(result.message);
       } else {
+        console.log('handleResetPassword - API returned success: false');
         toast.error('Error al restablecer la contraseña');
       }
     } catch (error) {
+      console.log('handleResetPassword - Error caught:', error);
       toast.error('Error al restablecer la contraseña. Por favor, intente nuevamente.');
       console.error('Reset password error:', error);
     } finally {
       setIsResetting(false);
+      console.log('handleResetPassword - Process finished, isResetting set to false');
     }
   };
 
@@ -88,6 +98,13 @@ const Index = () => {
   };
 
   const handleReset = () => {
+    setCurrentView('profile-selection');
+    setSelectedProfile(null);
+    setUserData(null);
+    setResetPhoneNumber('');
+  };
+
+  const handleGoHome = () => {
     setCurrentView('profile-selection');
     setSelectedProfile(null);
     setUserData(null);
@@ -140,11 +157,15 @@ const Index = () => {
           />
         )}
 
-        {currentView === 'success' && resetPhoneNumber && (
-          <SuccessMessage
-            phoneNumber={resetPhoneNumber}
-            onReset={handleReset}
-          />
+        {currentView === 'success' && (
+          <>
+            {console.log('Rendering success view - resetPhoneNumber:', resetPhoneNumber)}
+            <SuccessMessage
+              phoneNumber={resetPhoneNumber || 'No disponible'}
+              onReset={handleReset}
+              onGoHome={handleGoHome}
+            />
+          </>
         )}
       </main>
 

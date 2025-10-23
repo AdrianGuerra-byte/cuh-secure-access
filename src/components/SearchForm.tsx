@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Card } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
@@ -7,9 +7,15 @@ import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Search, ArrowLeft } from 'lucide-react';
 import { ProfileType } from '@/types/user.types';
 
+export interface TeacherNameData {
+  nombre: string;
+  apellidoPaterno: string;
+  apellidoMaterno: string;
+}
+
 interface SearchFormProps {
   profileType: ProfileType;
-  onSearch: (query: string, searchType: 'name' | 'id') => void;
+  onSearch: (query: string | TeacherNameData, searchType: 'name' | 'id') => void;
   onBack: () => void;
   isLoading?: boolean;
 }
@@ -17,17 +23,41 @@ interface SearchFormProps {
 const SearchForm = ({ profileType, onSearch, onBack, isLoading }: SearchFormProps) => {
   const [searchType, setSearchType] = useState<'name' | 'id'>('name');
   const [query, setQuery] = useState('');
+  const [teacherName, setTeacherName] = useState<TeacherNameData>({
+    nombre: '',
+    apellidoPaterno: '',
+    apellidoMaterno: ''
+  });
 
   const profileLabels = {
     student: { name: 'Nombre completo del alumno', id: 'Matrícula del alumno' },
-    teacher: { name: 'Nombre completo del docente', id: 'Matrícula del docente' },
+    teacher: { name: 'Datos del docente', id: 'Matrícula del docente' },
     administrative: { name: 'Nombre completo', id: 'ID de empleado' },
   };
 
+  // Reset form fields when search type or profile type changes
+  useEffect(() => {
+    setQuery('');
+    setTeacherName({
+      nombre: '',
+      apellidoPaterno: '',
+      apellidoMaterno: ''
+    });
+  }, [searchType, profileType]);
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (query.trim()) {
-      onSearch(query.trim(), searchType);
+    
+    if (profileType === 'teacher' && searchType === 'name') {
+      // For teachers searching by name, validate all name fields are filled
+      if (teacherName.nombre.trim() && teacherName.apellidoPaterno.trim() && teacherName.apellidoMaterno.trim()) {
+        onSearch(teacherName, searchType);
+      }
+    } else {
+      // For other cases (teacher by ID, student, administrative)
+      if (query.trim()) {
+        onSearch(query.trim(), searchType);
+      }
     }
   };
 
@@ -72,33 +102,92 @@ const SearchForm = ({ profileType, onSearch, onBack, isLoading }: SearchFormProp
             </div>
           </RadioGroup>
 
-          <div className="space-y-2">
-            <Label htmlFor="search-query">
-              {searchType === 'name' 
-                ? profileLabels[profileType].name 
-                : profileLabels[profileType].id}
-            </Label>
-            <Input
-              id="search-query"
-              type="text"
-              placeholder={
-                searchType === 'name'
-                  ? 'Ej: Juan Pérez García'
-                  : profileType === 'administrative' 
-                  ? 'Ej: ADM2019023'
-                  : 'Ej: EST2024001'
-              }
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
-              className="text-lg"
-              disabled={isLoading}
-            />
-          </div>
+          {profileType === 'teacher' && searchType === 'name' ? (
+            // Teacher name fields
+            <div className="space-y-4">
+              <Label className="text-base font-medium">
+                {profileLabels[profileType].name}
+              </Label>
+              <div className="space-y-3">
+                <div>
+                  <Label htmlFor="teacher-nombre" className="text-sm">
+                    Nombre(s)
+                  </Label>
+                  <Input
+                    id="teacher-nombre"
+                    type="text"
+                    placeholder="Ej: Juan Carlos"
+                    value={teacherName.nombre}
+                    onChange={(e) => setTeacherName(prev => ({ ...prev, nombre: e.target.value }))}
+                    className="text-lg"
+                    disabled={isLoading}
+                  />
+                </div>
+                <div>
+                  <Label htmlFor="teacher-paterno" className="text-sm">
+                    Apellido Paterno
+                  </Label>
+                  <Input
+                    id="teacher-paterno"
+                    type="text"
+                    placeholder="Ej: Pérez"
+                    value={teacherName.apellidoPaterno}
+                    onChange={(e) => setTeacherName(prev => ({ ...prev, apellidoPaterno: e.target.value }))}
+                    className="text-lg"
+                    disabled={isLoading}
+                  />
+                </div>
+                <div>
+                  <Label htmlFor="teacher-materno" className="text-sm">
+                    Apellido Materno
+                  </Label>
+                  <Input
+                    id="teacher-materno"
+                    type="text"
+                    placeholder="Ej: García"
+                    value={teacherName.apellidoMaterno}
+                    onChange={(e) => setTeacherName(prev => ({ ...prev, apellidoMaterno: e.target.value }))}
+                    className="text-lg"
+                    disabled={isLoading}
+                  />
+                </div>
+              </div>
+            </div>
+          ) : (
+            // Regular input for other cases
+            <div className="space-y-2">
+              <Label htmlFor="search-query">
+                {searchType === 'name' 
+                  ? profileLabels[profileType].name 
+                  : profileLabels[profileType].id}
+              </Label>
+              <Input
+                id="search-query"
+                type="text"
+                placeholder={
+                  searchType === 'name'
+                    ? 'Ej: Juan Pérez García'
+                    : profileType === 'administrative' 
+                    ? 'Ej: ADM2019023'
+                    : 'Ej: CUH532396454'
+                }
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                className="text-lg"
+                disabled={isLoading}
+              />
+            </div>
+          )}
 
           <Button
             type="submit"
             className="w-full text-lg py-6"
-            disabled={!query.trim() || isLoading}
+            disabled={
+              isLoading || 
+              (profileType === 'teacher' && searchType === 'name' 
+                ? !teacherName.nombre.trim() || !teacherName.apellidoPaterno.trim() || !teacherName.apellidoMaterno.trim()
+                : !query.trim())
+            }
           >
             <Search className="w-5 h-5 mr-2" />
             {isLoading ? 'Buscando...' : 'Buscar usuario'}

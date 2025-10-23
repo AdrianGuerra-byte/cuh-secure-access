@@ -1,7 +1,7 @@
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { ArrowLeft, Mail, Phone, Key, GraduationCap, Users, Briefcase } from 'lucide-react';
+import { ArrowLeft, Mail, Phone, Key, GraduationCap, BookOpen, Briefcase } from 'lucide-react';
 import { ProfileType, Student, Teacher, Administrative } from '@/types/user.types';
 
 interface UserDetailsProps {
@@ -18,9 +18,29 @@ const UserDetails = ({ profileType, userData, onBack, onResetPassword, isResetti
       case 'student':
         return <GraduationCap className="w-12 h-12 text-primary" />;
       case 'teacher':
-        return <Users className="w-12 h-12 text-primary" />;
+        return <BookOpen className="w-12 h-12 text-primary" />;
       case 'administrative':
         return <Briefcase className="w-12 h-12 text-primary" />;
+    }
+  };
+
+  // Validation function to check if we have required data for password reset
+  const canResetPassword = () => {
+    console.log('UserDetails - Validating password reset capability');
+    console.log('UserDetails - Profile Type:', profileType);
+    console.log('UserDetails - User Data:', userData);
+    
+    if (profileType === 'teacher') {
+      const teacher = userData as Teacher;
+      const canReset = Boolean(teacher.clave_docente?.trim());
+      console.log('UserDetails - Teacher clave_docente:', teacher.clave_docente, '- Can reset:', canReset);
+      return canReset;
+    } else {
+      const user = userData as Student | Administrative;
+      const userId = user.matricula || user.cuenta;
+      const canReset = Boolean(userId?.trim());
+      console.log('UserDetails - User matricula/cuenta:', userId, '- Can reset:', canReset);
+      return canReset;
     }
   };
 
@@ -29,17 +49,19 @@ const UserDetails = ({ profileType, userData, onBack, onResetPassword, isResetti
       const teacher = userData as Teacher;
       return `${teacher.nombre} ${teacher.paterno} ${teacher.materno}`;
     }
-    return (userData as Student | Administrative).nombre;
+    const user = userData as Student | Administrative;
+    return user.nombre_completo || user.nombre || 'Nombre no disponible';
   };
 
   const getPhoneNumber = () => {
     if (profileType === 'teacher') {
       return (userData as Teacher).telefono_celular;
     }
-    return (userData as Student | Administrative).telefono;
+    // For students and administrative, phone number is not provided by the new API
+    return (userData as Student | Administrative).telefono || 'No disponible';
   };
 
-  const renderSpecificInfo = () => {
+    const renderSpecificInfo = () => {
     if (profileType === 'teacher') {
       const teacher = userData as Teacher;
       return (
@@ -48,13 +70,25 @@ const UserDetails = ({ profileType, userData, onBack, onResetPassword, isResetti
           <InfoRow label="Clave Docente" value={teacher.clave_docente} />
         </>
       );
-    }
-    
-    if (profileType === 'student' || profileType === 'administrative') {
+    } else {
       const user = userData as Student | Administrative;
       return (
         <>
-          <InfoRow label="Matrícula" value={user.matricula} />
+          <InfoRow 
+            label="Matrícula" 
+            value={user.matricula || 'N/A'} 
+            icon={<GraduationCap className="w-4 h-4" />}
+          />
+          <InfoRow 
+            label="Grado Académico" 
+            value={user.grado_academico || 'N/A'} 
+            icon={<BookOpen className="w-4 h-4" />}
+          />
+          <InfoRow 
+            label={profileType === 'student' ? 'Carrera' : 'Área'} 
+            value={user.carrera || 'N/A'} 
+            icon={<Briefcase className="w-4 h-4" />}
+          />
         </>
       );
     }
@@ -92,26 +126,44 @@ const UserDetails = ({ profileType, userData, onBack, onResetPassword, isResetti
           <div className="space-y-4">
             {renderSpecificInfo()}
             
-            <InfoRow 
-              label="Número Telefónico" 
-              value={getPhoneNumber()}
-              icon={<Phone className="w-4 h-4" />}
-            />
+            {(profileType === 'teacher' || (userData as Student | Administrative).telefono) && (
+              <InfoRow 
+                label="Número Telefónico" 
+                value={getPhoneNumber()}
+                icon={<Phone className="w-4 h-4" />}
+              />
+            )}
           </div>
 
           {/* Reset Password Button */}
           <div className="pt-6 border-t border-border">
-            <Button
-              onClick={onResetPassword}
-              className="w-full py-6 text-lg"
-              disabled={isResetting}
-            >
-              <Key className="w-5 h-5 mr-2" />
-              {isResetting ? 'Restableciendo contraseña...' : 'Restablecer contraseña'}
-            </Button>
-            <p className="text-xs text-muted-foreground text-center mt-3">
-              La nueva contraseña será enviada por WhatsApp
-            </p>
+            {canResetPassword() ? (
+              <>
+                <Button
+                  onClick={onResetPassword}
+                  className="w-full py-6 text-lg"
+                  disabled={isResetting}
+                >
+                  <Key className="w-5 h-5 mr-2" />
+                  {isResetting ? 'Restableciendo contraseña...' : 'Restablecer contraseña'}
+                </Button>
+                <p className="text-xs text-muted-foreground text-center mt-3">
+                  La nueva contraseña será generada.
+                </p>
+              </>
+            ) : (
+              <div className="text-center py-4">
+                <p className="text-sm text-destructive mb-2">
+                  No se puede restablecer la contraseña
+                </p>
+                <p className="text-xs text-muted-foreground">
+                  {profileType === 'teacher' 
+                    ? `Falta la clave de docente. Valor actual: "${(userData as Teacher).clave_docente || 'undefined'}"` 
+                    : `Falta la matrícula del usuario. Valor actual: "${(userData as Student | Administrative).matricula || (userData as Student | Administrative).cuenta || 'undefined'}"`
+                  }
+                </p>
+              </div>
+            )}
           </div>
         </div>
       </Card>
