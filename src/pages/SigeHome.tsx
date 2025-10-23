@@ -59,9 +59,10 @@ const SigeHome = () => {
       toast.success('Usuario creado exitosamente');
       setPageState('list');
       await loadUsers();
-    } catch (error: any) {
+    } catch (error) {
       console.error('Error creating user:', error);
-      toast.error(error.message || 'Error al crear usuario');
+      const message = error instanceof Error ? error.message : 'Error al crear usuario';
+      toast.error(message);
       throw error; // Re-throw to let form handle it
     } finally {
       setIsCreating(false);
@@ -83,9 +84,10 @@ const SigeHome = () => {
       setIsEditModalOpen(false);
       setEditingUser(null);
       await loadUsers();
-    } catch (error: any) {
+    } catch (error) {
       console.error('Error updating user:', error);
-      toast.error(error.message || 'Error al actualizar usuario');
+      const message = error instanceof Error ? error.message : 'Error al actualizar usuario';
+      toast.error(message);
       throw error; // Re-throw to let form handle it
     } finally {
       setIsUpdating(false);
@@ -98,18 +100,26 @@ const SigeHome = () => {
   };
 
   const handleConfirmDelete = async () => {
-    if (!deletingUser?.numero_usuario) return;
+    if (!deletingUser) return;
+    
+    const userId = deletingUser.numero_usuario;
+    if (userId === undefined || userId === null) {
+      toast.error('No se puede eliminar: ID de usuario no válido');
+      console.error('Usuario sin numero_usuario:', deletingUser);
+      return;
+    }
 
     try {
       setIsDeleting(true);
-      await SigeApiService.deleteUser(deletingUser.numero_usuario);
+      await SigeApiService.deleteUser(userId);
       toast.success('Usuario eliminado exitosamente');
       setIsDeleteDialogOpen(false);
       setDeletingUser(null);
       await loadUsers();
-    } catch (error: any) {
+    } catch (error) {
       console.error('Error deleting user:', error);
-      toast.error(error.message || 'Error al eliminar usuario');
+      const message = error instanceof Error ? error.message : 'Error al eliminar usuario';
+      toast.error(message);
     } finally {
       setIsDeleting(false);
     }
