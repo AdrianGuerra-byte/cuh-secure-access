@@ -11,15 +11,29 @@ export interface Teacher {
 }
 
 export interface Student {
-  nombre: string;
+  nombre_completo: string;
   matricula: string;
-  telefono: string;
+  grado_academico: string;
+  carrera: string;
+  // Legacy fields for backward compatibility
+  nombre?: string;
+  cuenta?: string;
+  depto?: string;
+  nombre_departamento?: string;
+  telefono?: string;
 }
 
 export interface Administrative {
-  nombre: string;
+  nombre_completo: string;
   matricula: string;
-  telefono: string;
+  grado_academico: string;
+  carrera: string;
+  // Legacy fields for backward compatibility
+  nombre?: string;
+  cuenta?: string;
+  depto?: string;
+  nombre_departamento?: string;
+  telefono?: string;
 }
 
 export type UserData = Student | Teacher | Administrative;
