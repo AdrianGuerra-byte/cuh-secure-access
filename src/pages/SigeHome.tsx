@@ -75,11 +75,19 @@ const SigeHome = () => {
   };
 
   const handleUpdateUser = async (data: UpdateUserData) => {
-    if (!editingUser?.numero_usuario) return;
+    if (!editingUser) return;
+    
+    // Use numero_usuario if available, otherwise use cuenta
+    const userId = editingUser.numero_usuario ?? editingUser.cuenta;
+    if (!userId) {
+      toast.error('No se puede actualizar: ID de usuario no válido');
+      console.error('Usuario sin identificador:', editingUser);
+      return;
+    }
 
     try {
       setIsUpdating(true);
-      await SigeApiService.updateUser(editingUser.numero_usuario, data);
+      await SigeApiService.updateUser(userId, data);
       toast.success('Usuario actualizado exitosamente');
       setIsEditModalOpen(false);
       setEditingUser(null);
@@ -102,24 +110,42 @@ const SigeHome = () => {
   const handleConfirmDelete = async () => {
     if (!deletingUser) return;
     
-    const userId = deletingUser.numero_usuario;
-    if (userId === undefined || userId === null) {
+    // Use numero_usuario if available, otherwise use cuenta as fallback
+    const userId = deletingUser.numero_usuario ?? deletingUser.cuenta;
+    
+    // Debug logs
+    console.log('=== DELETE USER DEBUG ===');
+    console.log('Usuario completo:', deletingUser);
+    console.log('numero_usuario:', deletingUser.numero_usuario);
+    console.log('cuenta:', deletingUser.cuenta);
+    console.log('userId final:', userId);
+    console.log('========================');
+    
+    if (!userId) {
       toast.error('No se puede eliminar: ID de usuario no válido');
-      console.error('Usuario sin numero_usuario:', deletingUser);
+      console.error('Usuario sin identificador:', deletingUser);
       return;
     }
 
     try {
       setIsDeleting(true);
+      
+      // Call DELETE endpoint - will throw error if not successful
       await SigeApiService.deleteUser(userId);
+      
+      // If we reach here, deletion was successful (204 No Content)
       toast.success('Usuario eliminado exitosamente');
       setIsDeleteDialogOpen(false);
       setDeletingUser(null);
+      
+      // Refresh the user list to reflect the deletion
       await loadUsers();
     } catch (error) {
       console.error('Error deleting user:', error);
       const message = error instanceof Error ? error.message : 'Error al eliminar usuario';
       toast.error(message);
+      
+      // Keep modal open so user can try again or cancel
     } finally {
       setIsDeleting(false);
     }

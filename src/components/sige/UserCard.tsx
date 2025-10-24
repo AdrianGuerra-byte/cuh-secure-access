@@ -1,7 +1,7 @@
 import { SigeUser } from '@/types/sige.types';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Edit, Trash2 } from 'lucide-react';
+import { Trash2 } from 'lucide-react';
 
 interface UserCardProps {
   user: SigeUser;
@@ -49,15 +49,7 @@ export const UserCard = ({ user, onEdit, onDelete }: UserCardProps) => {
           </div>
 
           {/* Actions */}
-          <div className="flex gap-1 flex-shrink-0" onClick={(e) => e.stopPropagation()}>
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={() => onEdit(user)}
-              aria-label={`Editar ${user.nombre}`}
-            >
-              <Edit className="h-4 w-4" />
-            </Button>
+          <div className="flex-shrink-0" onClick={(e) => e.stopPropagation()}>
             <Button
               variant="ghost"
               size="icon"

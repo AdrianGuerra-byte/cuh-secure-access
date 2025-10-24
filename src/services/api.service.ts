@@ -1,7 +1,7 @@
 import { ProfileType, Student, Teacher, Administrative } from '@/types/user.types';
 import { TeacherNameData } from '@/components/SearchForm';
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://hoyt-uncautious-jonnie.ngrok-free.dev/';
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:6667/api/v1';
 
 export class ApiService {
   /**

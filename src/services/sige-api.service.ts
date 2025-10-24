@@ -1,6 +1,6 @@
 import { SigeUser, Department, CreateUserData, UpdateUserData } from '@/types/sige.types';
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000/api/v1';
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:6667/api/v1';
 
 export class SigeApiService {
   /**
@@ -19,6 +19,13 @@ export class SigeApiService {
       }
 
       const users = await response.json();
+      
+      // Debug: Log first user to see structure
+      if (users.length > 0) {
+        console.log('=== SIGE USER STRUCTURE ===');
+        console.log('First user from API:', users[0]);
+        console.log('===========================');
+      }
       
       // Trim spaces from nombre and cuenta
       return users.map((user: SigeUser) => ({
@@ -98,7 +105,7 @@ export class SigeApiService {
   /**
    * Update an existing user
    */
-  static async updateUser(numeroUsuario: number, userData: UpdateUserData): Promise<SigeUser> {
+  static async updateUser(idOrCuenta: number | string, userData: UpdateUserData): Promise<SigeUser> {
     try {
       // Trim data before sending
       const trimmedData = {
@@ -109,7 +116,7 @@ export class SigeApiService {
         gradoconsulta: userData.gradoconsulta
       };
 
-      const response = await fetch(`${API_BASE_URL}/usuarios/${numeroUsuario}`, {
+      const response = await fetch(`${API_BASE_URL}/usuarios/${idOrCuenta}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -118,9 +125,31 @@ export class SigeApiService {
         body: JSON.stringify(trimmedData)
       });
 
+      // Handle different status codes
+      if (response.status === 404) {
+        throw new Error('Usuario no encontrado. Puede que haya sido eliminado.');
+      }
+
+      if (response.status === 400) {
+        try {
+          const error = await response.json();
+          throw new Error(error.message || error.error || 'Datos de usuario no válidos.');
+        } catch (e) {
+          throw new Error('Datos de usuario no válidos.');
+        }
+      }
+
+      if (response.status === 500) {
+        throw new Error('Error interno del servidor. Por favor, intenta nuevamente.');
+      }
+
       if (!response.ok) {
-        const error = await response.json();
-        throw new Error(error.message || error.error || 'Error al actualizar usuario');
+        try {
+          const error = await response.json();
+          throw new Error(error.message || error.error || 'Error al actualizar usuario');
+        } catch {
+          throw new Error('Error al actualizar usuario');
+        }
       }
 
       return await response.json();
@@ -133,18 +162,45 @@ export class SigeApiService {
   /**
    * Delete a user
    */
-  static async deleteUser(numeroUsuario: number): Promise<void> {
+  static async deleteUser(idOrCuenta: number | string): Promise<void> {
     try {
-      const response = await fetch(`${API_BASE_URL}/usuarios/${numeroUsuario}`, {
+      const url = `${API_BASE_URL}/usuarios/${idOrCuenta}`;
+      console.log('DELETE Request URL:', url);
+      console.log('DELETE User ID:', idOrCuenta, 'Type:', typeof idOrCuenta);
+      
+      const response = await fetch(url, {
         method: 'DELETE',
         headers: {
           'ngrok-skip-browser-warning': 'true'
         }
       });
 
+      // Handle different status codes
+      if (response.status === 204) {
+        // Success - No Content
+        return;
+      }
+
+      if (response.status === 404) {
+        throw new Error('Usuario no encontrado. Puede que ya haya sido eliminado.');
+      }
+
+      if (response.status === 400) {
+        throw new Error('ID de usuario no válido.');
+      }
+
+      if (response.status === 500) {
+        throw new Error('Error interno del servidor. Por favor, intenta nuevamente.');
+      }
+
       if (!response.ok) {
-        const error = await response.json();
-        throw new Error(error.message || error.error || 'Error al eliminar usuario');
+        // Try to get error message from response
+        try {
+          const error = await response.json();
+          throw new Error(error.message || error.error || 'Error al eliminar usuario');
+        } catch {
+          throw new Error('Error al eliminar usuario');
+        }
       }
     } catch (error) {
       console.error('Error deleting user:', error);
