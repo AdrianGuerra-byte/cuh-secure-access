@@ -1,0 +1,26 @@
+# Configuración para Nginx
+# Si tu servidor usa Nginx, agrega esto a la configuración del sitio
+
+# Bloquear bots de rastreo
+if ($http_user_agent ~* (googlebot|bingbot|yandex|baiduspider|twitterbot|facebookexternalhit|ia_archiver)) {
+    return 403;
+}
+
+# Headers de seguridad anti-indexación
+add_header X-Robots-Tag "noindex, nofollow, noarchive, nosnippet" always;
+add_header X-Frame-Options "DENY" always;
+add_header X-Content-Type-Options "nosniff" always;
+add_header Referrer-Policy "no-referrer" always;
+
+# Bloquear acceso a archivos sensibles
+location ~ /\. {
+    deny all;
+    access_log off;
+    log_not_found off;
+}
+
+location = /robots.txt {
+    allow all;
+    log_not_found off;
+    access_log off;
+}

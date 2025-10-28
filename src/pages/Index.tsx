@@ -124,10 +124,10 @@ const Index = () => {
               <img 
                 src={cuhLogo} 
                 alt="Centro Universitario Hidalguense" 
-                className="h-16 object-contain"
+                className="h-12 object-contain"
               />
-              <div className="text-center">
-                <h1 className="text-3xl font-bold text-primary">SIREC</h1>
+              <div>
+                <h1 className="text-2xl font-bold text-primary">SIREC</h1>
                 <p className="text-sm text-muted-foreground">
                   Sistema Integral de Recuperación de Credenciales
                 </p>
@@ -136,7 +136,7 @@ const Index = () => {
             <Link to="/sige">
               <Button variant="outline" size="sm">
                 <Users className="h-4 w-4 mr-2" />
-                SIGE
+                Usuarios SIGE
               </Button>
             </Link>
           </div>

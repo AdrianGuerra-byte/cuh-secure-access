@@ -11,6 +11,7 @@ import {
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Edit, Trash2, Search, ArrowUpDown } from 'lucide-react';
+import { GradoConsultaBadge } from './GradoConsultaBadge';
 
 interface UserTableProps {
   users: SigeUser[];
@@ -70,13 +71,14 @@ export const UserTable = ({ users, onEdit, onDelete }: UserTableProps) => {
               </TableHead>
               <TableHead>Cuenta</TableHead>
               <TableHead>Departamento</TableHead>
+              <TableHead>Grado</TableHead>
               <TableHead className="text-right">Acciones</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {sortedUsers.length === 0 ? (
               <TableRow>
-                <TableCell colSpan={4} className="text-center text-muted-foreground">
+                <TableCell colSpan={5} className="text-center text-muted-foreground">
                   No se encontraron usuarios
                 </TableCell>
               </TableRow>
@@ -89,6 +91,9 @@ export const UserTable = ({ users, onEdit, onDelete }: UserTableProps) => {
                     <span className="inline-block px-2 py-1 text-xs rounded-full bg-secondary text-secondary-foreground">
                       {user.nombre_departamento}
                     </span>
+                  </TableCell>
+                  <TableCell>
+                    <GradoConsultaBadge grado={user.gradoconsulta} />
                   </TableCell>
                   <TableCell className="text-right">
                     <div className="flex justify-end gap-2">

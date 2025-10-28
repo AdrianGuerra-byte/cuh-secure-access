@@ -1,0 +1,28 @@
+# Bloquear archivadores web
+# Para Apache servers
+
+# Bloquear Wayback Machine (Internet Archive)
+SetEnvIfNoCase User-Agent "ia_archiver" bad_bot
+SetEnvIfNoCase User-Agent "archive.org_bot" bad_bot
+
+# Bloquear otros archivadores comunes
+SetEnvIfNoCase User-Agent "BLEXBot" bad_bot
+SetEnvIfNoCase User-Agent "ArchiveBot" bad_bot
+
+# Denegar acceso a bots marcados
+<Limit GET POST>
+    Order Allow,Deny
+    Allow from all
+    Deny from env=bad_bot
+</Limit>
+
+# Headers adicionales de seguridad
+<IfModule mod_headers.c>
+    # Prevenir que el sitio sea indexado
+    Header set X-Robots-Tag "noindex, nofollow, noarchive, nosnippet"
+    
+    # Seguridad adicional
+    Header set X-Frame-Options "DENY"
+    Header set X-Content-Type-Options "nosniff"
+    Header set Referrer-Policy "no-referrer"
+</IfModule>

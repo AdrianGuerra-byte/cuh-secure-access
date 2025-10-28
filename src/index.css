@@ -1,3 +1,25 @@
+/**
+ * ============================================
+ * SISTEMA DE DISEÑO CUH SECURE ACCESS
+ * ============================================
+ * 
+ * Este archivo contiene las variables CSS base del sistema de diseño.
+ * Todos los colores están en formato HSL para facilitar variaciones.
+ * 
+ * FORMATO HSL (Hue Saturation Lightness):
+ * - Hue (Matiz): 0-360 grados en el círculo cromático
+ * - Saturation (Saturación): 0-100% (0% = gris, 100% = color puro)
+ * - Lightness (Luminosidad): 0-100% (0% = negro, 100% = blanco)
+ * 
+ * NOTA: Los valores HSL se escriben sin hsl() wrapper para permitir
+ * modificadores de opacidad en Tailwind (ej: bg-primary/90)
+ * 
+ * ESTRUCTURA:
+ * 1. Variables CSS (:root) - Tema claro
+ * 2. Dark mode (.dark) - Tema oscuro
+ * 3. Base styles (body, reset)
+ */
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -6,63 +28,230 @@
 All colors MUST be HSL.
 */
 
+/**
+ * ============================================
+ * TEMA CLARO (Light Mode) - Variables Base
+ * ============================================
+ */
 @layer base {
   :root {
+    /* ===== FONDO Y TEXTO BASE ===== */
     /* CUH Institutional Blue and elegant color palette */
+    
+    /* Fondo principal de la aplicación: Gris muy claro #f7f8fa
+     * HSL: 210° (azul), 20% saturación, 98% luminosidad
+     * Uso: Fondo de todas las páginas
+     */
     --background: 210 20% 98%;
+    
+    /* Texto principal: Azul oscuro #19365a
+     * HSL: 218° (azul), 54% saturación, 20% luminosidad
+     * Uso: Todo el texto principal del sitio
+     */
     --foreground: 218 54% 20%;
 
+    /* ===== CARDS Y CONTENEDORES ===== */
+    /* Fondo de tarjetas: Blanco puro #ffffff
+     * Uso: Cards, modales, contenedores elevados
+     */
     --card: 0 0% 100%;
     --card-foreground: 218 54% 20%;
 
+    /* ===== POPOVERS Y DROPDOWNS ===== */
+    /* Fondo de elementos flotantes: Blanco #ffffff
+     * Uso: Dropdowns, tooltips, menús contextuales
+     */
     --popover: 0 0% 100%;
     --popover-foreground: 218 54% 20%;
 
-    /* Primary: CUH Blue */
+    /* ===== COLOR PRIMARY - AZUL CUH INSTITUCIONAL ===== */
+    /* Primary: CUH Blue #1e4a7f
+     * HSL: 218° (azul), 54% saturación, 31% luminosidad
+     * RGB: rgb(30, 74, 127)
+     * Uso: Botones principales, títulos, logos, enlaces importantes
+     * Hover: Se usa con /90 para oscurecer 10% (ej: bg-primary/90)
+     */
     --primary: 218 54% 31%;
+    
+    /* Texto sobre color primary: Blanco #ffffff
+     * Uso: Texto en botones primary, badges primary
+     */
     --primary-foreground: 0 0% 100%;
+    
+    /* Primary hover: Azul más oscuro #183a66
+     * HSL: 218° (azul), 54% saturación, 26% luminosidad
+     * Uso: Estado hover de elementos primary
+     */
     --primary-hover: 218 54% 26%;
     
-    /* Secondary: Lighter blue */
+    /* ===== COLOR SECONDARY - AZUL CLARO ===== */
+    /* Secondary: Lighter blue #d4dfe9
+     * HSL: 215° (azul), 45% saturación, 88% luminosidad
+     * Uso: Badges de departamento, chips informativos, fondos sutiles
+     */
     --secondary: 215 45% 88%;
+    
+    /* Texto sobre secondary: Azul oscuro #19365a
+     * Uso: Texto en badges, elementos secondary
+     */
     --secondary-foreground: 218 54% 20%;
 
+    /* ===== ELEMENTOS SILENCIADOS/DESHABILITADOS ===== */
+    /* Muted background: Gris claro #e5eaef
+     * HSL: 215° (azul), 30% saturación, 92% luminosidad
+     * Uso: Fondos de elementos deshabilitados, headers de tabla
+     */
     --muted: 215 30% 92%;
+    
+    /* Muted foreground: Gris medio #5f7389
+     * HSL: 218° (azul), 20% saturación, 45% luminosidad
+     * Uso: Texto secundario, ayuda contextual, subtítulos, cuenta de usuario
+     */
     --muted-foreground: 218 20% 45%;
 
-    /* Accent: Complementary blue-gray */
+    /* ===== ACCENT - HOVER STATES ===== */
+    /* Accent: Complementary blue-gray #e3e9ee
+     * HSL: 210° (azul), 40% saturación, 90% luminosidad
+     * Uso: Hover en botones ghost, outline, filas de tabla, fondos interactivos
+     */
     --accent: 210 40% 90%;
+    
+    /* Texto sobre accent: Azul CUH #1e4a7f
+     * Uso: Texto cuando el fondo es accent
+     */
     --accent-foreground: 218 54% 31%;
 
+    /* ===== DESTRUCTIVE - ACCIONES PELIGROSAS ===== */
+    /* Destructive: Rojo advertencia #ea3943
+     * HSL: 0° (rojo), 84.2% saturación, 60.2% luminosidad
+     * Uso: Botones eliminar, alertas de error, acciones irreversibles
+     */
     --destructive: 0 84.2% 60.2%;
+    
+    /* Texto sobre destructive: Blanco #ffffff
+     * Uso: Texto en botones destructive
+     */
     --destructive-foreground: 0 0% 100%;
 
+    /* ===== BORDES ===== */
+    /* Border general: Gris claro #d9dfe6
+     * HSL: 215° (azul), 20% saturación, 88% luminosidad
+     * Uso: Bordes de tarjetas, divisores, separadores
+     */
     --border: 215 20% 88%;
+    
+    /* Border de inputs: Mismo que border #d9dfe6
+     * Uso: Bordes de campos de texto, selects, textareas
+     */
     --input: 215 20% 88%;
+    
+    /* Ring de focus: Azul primary #1e4a7f
+     * HSL: 218° (azul), 54% saturación, 31% luminosidad
+     * Uso: Focus ring en inputs, botones, elementos interactivos
+     * Se usa con ring-2 y ring-offset-2
+     */
     --ring: 218 54% 31%;
 
+    /* ===== BORDER RADIUS ===== */
+    /* Radio base: 12px (0.75rem)
+     * Usado en: Tarjetas (rounded-lg), modales, botones default
+     * 
+     * Variaciones calculadas:
+     * - rounded-sm: 8px (calc(0.75rem - 4px)) → Elementos muy pequeños
+     * - rounded-md: 10px (calc(0.75rem - 2px)) → Inputs, botones outline
+     * - rounded-lg: 12px (var(--radius)) → Tarjetas, modales, cards
+     * - rounded-xl: 16px → Elementos destacados
+     * - rounded-full: 9999px → Círculos (avatares), pills (badges)
+     */
     --radius: 0.75rem;
 
-    /* Success states */
+    /* ===== SUCCESS STATES ===== */
+    /* Success: Verde éxito #22c55e
+     * HSL: 142° (verde), 71% saturación, 45% luminosidad
+     * Uso: Mensajes de confirmación, estados exitosos, checkmarks
+     */
     --success: 142 71% 45%;
+    
+    /* Texto sobre success: Blanco #ffffff
+     * Uso: Texto en badges/alertas de éxito
+     */
     --success-foreground: 0 0% 100%;
 
-    /* Shadows and effects */
+    /* ===== GRADOS DE CONSULTA (BADGES PERSONALIZADOS) ===== */
+    /* Estos colores no están en variables CSS, se usan directamente en GradoConsultaBadge */
+    
+    /* LICU (Licenciatura):
+     * Background: hsl(197 71% 73%) - Azul cielo claro #73c7e8
+     * Text: hsl(198 100% 20%) - Azul oscuro #003e66
+     * Uso: Badge de grado LICU (acceso limitado)
+     */
+    
+    /* MACU (Maestría):
+     * Background: hsl(266 68% 78%) - Púrpura claro #b69edc
+     * Text: hsl(266 60% 25%) - Púrpura oscuro #291a52
+     * Uso: Badge de grado MACU (acceso medio)
+     */
+    
+    /* ALL (Todos):
+     * Background: hsl(142 50% 75%) - Verde claro #8ed9a8
+     * Text: hsl(142 60% 20%) - Verde oscuro #145229
+     * Uso: Badge de grado ALL (acceso completo)
+     */
+
+    /* ===== SOMBRAS Y EFECTOS ===== */
+    /* Shadow pequeña (sm): Elevación sutil
+     * Box shadow: 0px vertical, 1px blur, 2px spread, azul al 5% opacidad
+     * Uso: Inputs, badges, elementos con elevación mínima
+     */
     --shadow-sm: 0 1px 2px 0 hsl(218 54% 31% / 0.05);
+    
+    /* Shadow default: Elevación estándar
+     * Box shadow: 0px vertical, 4px blur, -1px spread, azul al 10% opacidad
+     * Uso: Cards, buttons elevados, elementos interactivos, hover states
+     */
     --shadow: 0 4px 6px -1px hsl(218 54% 31% / 0.1);
+    
+    /* Shadow large (lg): Elevación alta
+     * Box shadow: 0px vertical, 10px blur, -3px spread, azul al 15% opacidad
+     * Uso: Modales, dropdowns, popovers, elementos flotantes importantes
+     */
     --shadow-lg: 0 10px 25px -3px hsl(218 54% 31% / 0.15);
   }
 
+  /**
+   * ============================================
+   * TEMA OSCURO (Dark Mode)
+   * ============================================
+   * Se activa agregando clase 'dark' al elemento raíz (<html class="dark">)
+   * Los colores se ajustan para mantener contraste adecuado (mínimo 4.5:1)
+   */
   .dark {
+    /* Fondo oscuro: Azul muy oscuro #112233
+     * HSL: 218° (azul), 45% saturación, 12% luminosidad
+     * Más oscuro que negro puro para mantener tono azulado
+     */
     --background: 218 45% 12%;
+    
+    /* Texto claro: Gris casi blanco #f4f6f8
+     * HSL: 210° (azul), 40% saturación, 98% luminosidad
+     * Ligeramente tintado de azul para armonía
+     */
     --foreground: 210 40% 98%;
 
+    /* Cards en modo oscuro: Azul oscuro #1a2c42
+     * HSL: 218° (azul), 40% saturación, 16% luminosidad
+     * Más claro que background para crear separación visual
+     */
     --card: 218 40% 16%;
     --card-foreground: 210 40% 98%;
 
     --popover: 218 40% 16%;
     --popover-foreground: 210 40% 98%;
 
+    /* Primary más brillante en dark mode: #3a7bd5
+     * HSL: 218° (azul), 70% saturación, 55% luminosidad
+     * Se aumenta luminosidad para mejor contraste sobre fondo oscuro
+     */
     --primary: 218 70% 55%;
     --primary-foreground: 218 54% 12%;
     --primary-hover: 218 70% 60%;
@@ -76,6 +265,9 @@ All colors MUST be HSL.
     --accent: 218 30% 25%;
     --accent-foreground: 210 40% 98%;
 
+    /* Destructive ajustado para dark mode
+     * Menos saturado para reducir fatiga visual
+     */
     --destructive: 0 62.8% 50.6%;
     --destructive-foreground: 210 40% 98%;
 
@@ -86,17 +278,45 @@ All colors MUST be HSL.
     --success: 142 71% 45%;
     --success-foreground: 0 0% 100%;
 
+    /* Sombras en dark mode: Negro puro con opacidades mayores
+     * No se usa color azul porque sobre fondo oscuro no se ve
+     */
     --shadow-sm: 0 1px 2px 0 hsl(0 0% 0% / 0.3);
     --shadow: 0 4px 6px -1px hsl(0 0% 0% / 0.4);
     --shadow-lg: 0 10px 25px -3px hsl(0 0% 0% / 0.5);
   }
 }
 
+/**
+ * ============================================
+ * ESTILOS BASE GLOBALES
+ * ============================================
+ */
 @layer base {
+  /**
+   * RESET UNIVERSAL
+   * Aplica color de borde por defecto a todos los elementos
+   * Esto asegura consistencia en los bordes de todos los componentes
+   */
   * {
     @apply border-border;
   }
 
+  /**
+   * BODY - Elemento raíz del documento
+   * 
+   * - bg-background: Aplica el color de fondo principal
+   * - text-foreground: Aplica el color de texto principal
+   * 
+   * Font family se define automáticamente por Tailwind:
+   * -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, 
+   * "Helvetica Neue", Arial, sans-serif
+   * 
+   * Esto usa la fuente nativa del sistema operativo para:
+   * - Mejor rendimiento (fuente ya instalada)
+   * - Apariencia nativa en cada plataforma
+   * - Mejor legibilidad
+   */
   body {
     @apply bg-background text-foreground;
   }

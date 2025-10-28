@@ -1,3 +1,82 @@
+/**
+ * COMPONENTE: Button - Sistema de Botones con Variantes
+ * 
+ * VARIANTES DE ESTILO (variant):
+ * 
+ * 1. DEFAULT (Primary)
+ *    - Background: hsl(218 54% 31%) - Azul CUH institucional
+ *    - Color: #ffffff - Texto blanco
+ *    - Hover: bg-primary/90 (10% más transparente)
+ *    - Uso: Acciones principales, envío de formularios
+ * 
+ * 2. DESTRUCTIVE (Peligroso)
+ *    - Background: hsl(0 84.2% 60.2%) - Rojo advertencia
+ *    - Color: #ffffff - Texto blanco
+ *    - Hover: bg-destructive/90
+ *    - Uso: Eliminar, acciones irreversibles
+ * 
+ * 3. OUTLINE (Secundario)
+ *    - Background: Transparente
+ *    - Border: 1px solid hsl(215 20% 88%)
+ *    - Color: hsl(218 54% 20%) - Texto oscuro
+ *    - Hover: bg-accent hsl(210 40% 90%)
+ *    - Uso: Acciones secundarias, cancelar
+ * 
+ * 4. SECONDARY
+ *    - Background: hsl(215 45% 88%) - Azul muy claro
+ *    - Color: hsl(218 54% 20%) - Texto oscuro
+ *    - Hover: bg-secondary/80
+ *    - Uso: Acciones terciarias
+ * 
+ * 5. GHOST (Fantasma)
+ *    - Background: Transparente (sin borde)
+ *    - Hover: bg-accent hsl(210 40% 90%)
+ *    - Uso: Botones de ícono, acciones sutiles
+ * 
+ * 6. LINK
+ *    - Color: hsl(218 54% 31%) - Azul primary
+ *    - Text decoration: underline on hover
+ *    - Uso: Links estilizados como botones
+ * 
+ * TAMAÑOS (size):
+ * 
+ * 1. DEFAULT
+ *    - Altura: 40px (h-10 = 2.5rem)
+ *    - Padding X: 16px (px-4 = 1rem)
+ *    - Padding Y: 8px (py-2 = 0.5rem)
+ *    - Font size: 14px (text-sm = 0.875rem)
+ *    - Font weight: 500 Medium (font-medium)
+ *    - Uso: Botones estándar
+ * 
+ * 2. SM (Small)
+ *    - Altura: 36px (h-9 = 2.25rem)
+ *    - Padding X: 12px (px-3 = 0.75rem)
+ *    - Border radius: 10px (rounded-md)
+ *    - Uso: Botones compactos, navbar
+ * 
+ * 3. LG (Large)
+ *    - Altura: 44px (h-11 = 2.75rem)
+ *    - Padding X: 32px (px-8 = 2rem)
+ *    - Border radius: 10px (rounded-md)
+ *    - Uso: Botones destacados, CTAs
+ * 
+ * 4. ICON (Solo ícono)
+ *    - Dimensiones: 40x40px (h-10 w-10 cuadrado)
+ *    - Padding: 0 (centrado automático)
+ *    - Uso: Botones de acción con solo ícono
+ * 
+ * ESTILOS BASE (todos los botones):
+ * - Display: inline-flex
+ * - Align items: center
+ * - Justify: center
+ * - Gap: 8px (gap-2 entre ícono y texto)
+ * - Border radius: 10px (rounded-md)
+ * - Transition: colors 0.2s ease
+ * - Focus ring: 2px solid primary con offset 2px
+ * - Disabled: opacity 50%, pointer-events none
+ * - SVG size: 16x16px automático
+ */
+
 import * as React from "react";
 import { Slot } from "@radix-ui/react-slot";
 import { cva, type VariantProps } from "class-variance-authority";

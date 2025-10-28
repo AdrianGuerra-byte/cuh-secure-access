@@ -111,15 +111,7 @@ const SigeHome = () => {
     if (!deletingUser) return;
     
     // Use numero_usuario if available, otherwise use cuenta as fallback
-    const userId = deletingUser.numero_usuario ?? deletingUser.cuenta;
-    
-    // Debug logs
-    console.log('=== DELETE USER DEBUG ===');
-    console.log('Usuario completo:', deletingUser);
-    console.log('numero_usuario:', deletingUser.numero_usuario);
-    console.log('cuenta:', deletingUser.cuenta);
-    console.log('userId final:', userId);
-    console.log('========================');
+    const userId = deletingUser.numero_usuario ?? deletingUser.cuenta; 
     
     if (!userId) {
       toast.error('No se puede eliminar: ID de usuario no válido');
@@ -164,9 +156,9 @@ const SigeHome = () => {
                 className="h-12 object-contain"
               />
               <div>
-                <h1 className="text-2xl font-bold text-primary">SIGE - Gestión de Usuarios</h1>
+                <h1 className="text-2xl font-bold text-primary">SIGE</h1>
                 <p className="text-sm text-muted-foreground">
-                  Sistema Integral de Gestión Educativa
+                  Gestion de usuarios del SIGE
                 </p>
               </div>
             </div>

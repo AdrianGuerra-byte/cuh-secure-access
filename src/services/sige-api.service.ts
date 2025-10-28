@@ -20,20 +20,20 @@ export class SigeApiService {
 
       const users = await response.json();
       
-      // Debug: Log first user to see structure
-      if (users.length > 0) {
-        console.log('=== SIGE USER STRUCTURE ===');
-        console.log('First user from API:', users[0]);
-        console.log('===========================');
-      }
-      
       // Trim spaces from nombre and cuenta
-      return users.map((user: SigeUser) => ({
+      // NOTA: El backend actualmente NO devuelve 'depto' ni 'gradoconsulta'
+      // Estos campos solo están disponibles después de crear/editar un usuario
+      const processedUsers = users.map((user: SigeUser) => ({
         ...user,
         nombre: user.nombre?.trim() || '',
         cuenta: user.cuenta?.trim() || '',
-        nombre_departamento: user.nombre_departamento?.trim() || ''
+        nombre_departamento: user.nombre_departamento?.trim() || '',
+        // Asegurar que depto y gradoconsulta existan aunque sean undefined
+        depto: user.depto || undefined,
+        gradoconsulta: user.gradoconsulta || undefined
       }));
+      
+      return processedUsers;
     } catch (error) {
       console.error('Error fetching SIGE users:', error);
       throw error;
