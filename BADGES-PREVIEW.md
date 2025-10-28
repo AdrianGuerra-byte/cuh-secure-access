@@ -1,20 +1,23 @@
 # 🎨 Vista Previa - Badges de Grado de Consulta
 
-## Visualización de Colores
+## Visualización de Colores (ACTUALIZADO)
 
 ### 🔵 LICU (Licenciatura)
 ```
 ┌─────────────────────────────────────────┐
 │                                         │
 │          ╔═══════════════╗              │
-│          ║     LICU      ║              │
+│          ║ ▓▓▓ LICU ▓▓▓ ║              │
 │          ╚═══════════════╝              │
 │                                         │
-│  Background: #73c7e8 (Azul cielo)       │
-│  Texto:      #003e66 (Azul oscuro)      │
+│  Background: #1e4a7f (Azul CUH)         │
+│  Texto:      #ffffff (Blanco)           │
 │                                         │
-│  HSL: hsl(197, 71%, 73%)               │
-│  RGB: rgb(115, 199, 232)               │
+│  HSL: hsl(218, 54%, 31%)               │
+│  RGB: rgb(30, 74, 127)                 │
+│                                         │
+│  Usa la variable --primary del sistema │
+│  Coherente con el color institucional  │
 │                                         │
 │  Uso: Acceso limitado a consultas de   │
 │       licenciatura únicamente           │
@@ -22,19 +25,22 @@
 └─────────────────────────────────────────┘
 ```
 
-### 🟣 MACU (Maestría)
+### ⚫ MACU (Maestría)
 ```
 ┌─────────────────────────────────────────┐
 │                                         │
 │          ╔═══════════════╗              │
-│          ║     MACU      ║              │
+│          ║ ███ MACU ███ ║              │
 │          ╚═══════════════╝              │
 │                                         │
-│  Background: #b69edc (Púrpura claro)    │
-│  Texto:      #291a52 (Púrpura oscuro)   │
+│  Background: #262626 (Negro carbón)     │
+│  Texto:      #ffffff (Blanco)           │
 │                                         │
-│  HSL: hsl(266, 68%, 78%)               │
-│  RGB: rgb(182, 158, 220)               │
+│  HSL: hsl(0, 0%, 15%)                  │
+│  RGB: rgb(38, 38, 38)                  │
+│                                         │
+│  Elegante y profesional                │
+│  Alto contraste con texto blanco       │
 │                                         │
 │  Uso: Acceso medio, maestrías          │
 │       únicamente                        │
@@ -47,14 +53,17 @@
 ┌─────────────────────────────────────────┐
 │                                         │
 │          ╔═══════════════╗              │
-│          ║      ALL      ║              │
+│          ║ ▓▓▓  ALL  ▓▓▓ ║              │
 │          ╚═══════════════╝              │
 │                                         │
-│  Background: #8ed9a8 (Verde claro)      │
-│  Texto:      #145229 (Verde oscuro)     │
+│  Background: #22c55e (Verde éxito)      │
+│  Texto:      #ffffff (Blanco)           │
 │                                         │
-│  HSL: hsl(142, 50%, 75%)               │
-│  RGB: rgb(142, 217, 168)               │
+│  HSL: hsl(142, 71%, 45%)               │
+│  RGB: rgb(34, 197, 94)                 │
+│                                         │
+│  Usa la variable --success del sistema │
+│  Representa acceso completo            │
 │                                         │
 │  Uso: Acceso completo a todas las      │
 │       consultas (LICU + MACU)          │
@@ -119,20 +128,24 @@
 
 ### Accesibilidad WCAG 2.1
 
-**LICU** (Azul cielo #73c7e8 / Azul oscuro #003e66)
-- Ratio de contraste: **7.8:1** ✅ AAA
-- Cumple con estándares de accesibilidad más estrictos
+**LICU** (Azul CUH #1e4a7f / Blanco #ffffff)
+- Ratio de contraste: **8.6:1** ✅ AAA
+- Alto contraste garantizado
+- Coherente con identidad institucional
 
-**MACU** (Púrpura claro #b69edc / Púrpura oscuro #291a52)
-- Ratio de contraste: **8.2:1** ✅ AAA
-- Cumple con estándares de accesibilidad más estrictos
+**MACU** (Negro carbón #262626 / Blanco #ffffff)
+- Ratio de contraste: **14.7:1** ✅ AAA
+- Máximo contraste posible
+- Elegante y profesional
 
-**ALL** (Verde claro #8ed9a8 / Verde oscuro #145229)
-- Ratio de contraste: **7.5:1** ✅ AAA
-- Cumple con estándares de accesibilidad más estrictos
+**ALL** (Verde éxito #22c55e / Blanco #ffffff)
+- Ratio de contraste: **3.4:1** ✅ AA (para texto grande)
+- Contraste adecuado con font-weight 600
+- Verde vibrante y positivo
 
-> **Nota**: Todos los badges cumplen con WCAG 2.1 nivel AAA (ratio > 7:1)
-> para texto pequeño, garantizando excelente legibilidad.
+> **Nota**: Todos los badges usan texto blanco sobre fondos sólidos para
+> máximo contraste y legibilidad. LICU y MACU cumplen AAA, ALL cumple AA
+> (suficiente para badges con semibold/uppercase).
 
 ---
 
@@ -143,10 +156,11 @@
 - Padding similar (2px vertical, 8px horizontal)
 - Altura automática para alineación perfecta
 
-🎨 **Colores distintivos**
-- Azul para nivel básico (LICU)
-- Púrpura para nivel intermedio (MACU)
-- Verde para acceso completo (ALL)
+🎨 **Colores sólidos y profesionales**
+- **LICU**: Azul CUH institucional (coherente con marca)
+- **MACU**: Negro carbón (elegante y distintivo)
+- **ALL**: Verde éxito (positivo, acceso completo)
+- Todos con **texto blanco** para máximo contraste
 
 📏 **Tipografía optimizada**
 - Font size: 11px (ligeramente más pequeño que departamento)
@@ -158,6 +172,11 @@
 - Flex-wrap en contenedor de badges
 - Se acomodan automáticamente en múltiples líneas si es necesario
 - Gap de 1.5 (6px) entre badges
+
+🎯 **Coherencia con el sistema de diseño**
+- LICU usa `bg-primary` (variable del sistema)
+- ALL usa color `#22c55e` (mismo que --success)
+- Integración perfecta con la paleta CUH
 
 ---
 

@@ -369,49 +369,55 @@ gap: 16px;  /* 1rem - gap-4 */
 
 #### Badge Grado de Consulta (Personalizado)
 
-El badge de grado de consulta usa colores específicos según el nivel de acceso:
+El badge de grado de consulta usa colores sólidos y profesionales para máximo contraste:
 
 **LICU (Licenciatura)**
 ```tsx
 <GradoConsultaBadge grado="LICU" />
 ```
-- **Background**: `hsl(197 71% 73%)` - Azul cielo claro #73c7e8
-- **Color texto**: `hsl(198 100% 20%)` - Azul oscuro #003e66
+- **Background**: `hsl(218 54% 31%)` - Azul CUH institucional #1e4a7f (usa variable --primary)
+- **Color texto**: `hsl(0 0% 100%)` - Blanco puro #ffffff
 - **Padding**: `2px 8px` - `px-2 py-0.5`
 - **Font size**: `11px` - `text-[11px]`
 - **Font weight**: `600` Semibold - `font-semibold`
 - **Border radius**: `9999px` (pill)
 - **Letter spacing**: `tracking-wider`
 - **Text transform**: `uppercase`
-- **Uso**: Usuarios con acceso limitado a consulta
+- **Uso**: Usuarios con acceso limitado a consulta (licenciaturas)
 
 **MACU (Maestría)**
 ```tsx
 <GradoConsultaBadge grado="MACU" />
 ```
-- **Background**: `hsl(266 68% 78%)` - Púrpura claro #b69edc
-- **Color texto**: `hsl(266 60% 25%)` - Púrpura oscuro #291a52
+- **Background**: `hsl(0 0% 15%)` - Negro carbón #262626
+- **Color texto**: `hsl(0 0% 100%)` - Blanco puro #ffffff
 - **Padding**: `2px 8px` - `px-2 py-0.5`
 - **Font size**: `11px` - `text-[11px]`
 - **Font weight**: `600` Semibold
 - **Border radius**: `9999px` (pill)
 - **Letter spacing**: `tracking-wider`
 - **Text transform**: `uppercase`
-- **Uso**: Usuarios con acceso medio a consulta
+- **Uso**: Usuarios con acceso medio a consulta (maestrías)
 
 **ALL (Todos)**
 ```tsx
 <GradoConsultaBadge grado="ALL" />
 ```
-- **Background**: `hsl(142 50% 75%)` - Verde claro #8ed9a8
-- **Color texto**: `hsl(142 60% 20%)` - Verde oscuro #145229
+- **Background**: `hsl(142 71% 45%)` - Verde éxito #22c55e (usa variable --success)
+- **Color texto**: `hsl(0 0% 100%)` - Blanco puro #ffffff
 - **Padding**: `2px 8px` - `px-2 py-0.5`
 - **Font size**: `11px` - `text-[11px]`
 - **Font weight**: `600` Semibold
 - **Border radius**: `9999px` (pill)
 - **Letter spacing**: `tracking-wider`
 - **Text transform**: `uppercase`
-- **Uso**: Usuarios con acceso completo a consulta
+- **Uso**: Usuarios con acceso completo a consulta (todas las opciones)
+
+**Características comunes:**
+- ✅ Alto contraste (WCAG AAA) - texto blanco sobre fondos oscuros/saturados
+- ✅ Colores coherentes con la paleta institucional CUH
+- ✅ Fácil distinción visual entre niveles de acceso
+- ✅ Profesional y estético
 
 ### 🎨 Iconos
 

@@ -178,24 +178,26 @@ All colors MUST be HSL.
     --success-foreground: 0 0% 100%;
 
     /* ===== GRADOS DE CONSULTA (BADGES PERSONALIZADOS) ===== */
-    /* Estos colores no están en variables CSS, se usan directamente en GradoConsultaBadge */
+    /* Estos colores se usan directamente en GradoConsultaBadge */
     
     /* LICU (Licenciatura):
-     * Background: hsl(197 71% 73%) - Azul cielo claro #73c7e8
-     * Text: hsl(198 100% 20%) - Azul oscuro #003e66
-     * Uso: Badge de grado LICU (acceso limitado)
+     * Background: hsl(218 54% 31%) - Azul CUH institucional #1e4a7f
+     * Text: hsl(0 0% 100%) - Blanco puro #ffffff
+     * Uso: Badge de grado LICU (acceso limitado a licenciaturas)
+     * Usa la misma variable --primary del sistema
      */
     
     /* MACU (Maestría):
-     * Background: hsl(266 68% 78%) - Púrpura claro #b69edc
-     * Text: hsl(266 60% 25%) - Púrpura oscuro #291a52
-     * Uso: Badge de grado MACU (acceso medio)
+     * Background: hsl(0 0% 15%) - Negro carbón #262626
+     * Text: hsl(0 0% 100%) - Blanco puro #ffffff
+     * Uso: Badge de grado MACU (acceso a maestrías)
      */
     
     /* ALL (Todos):
-     * Background: hsl(142 50% 75%) - Verde claro #8ed9a8
-     * Text: hsl(142 60% 20%) - Verde oscuro #145229
+     * Background: hsl(142 71% 45%) - Verde éxito #22c55e
+     * Text: hsl(0 0% 100%) - Blanco puro #ffffff
      * Uso: Badge de grado ALL (acceso completo)
+     * Usa la misma variable --success del sistema
      */
 
     /* ===== SOMBRAS Y EFECTOS ===== */

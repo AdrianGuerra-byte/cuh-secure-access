@@ -4,18 +4,18 @@
  * VARIANTES DE GRADO:
  * 
  * 1. LICU (Licenciatura)
- *    - Background: hsl(197 71% 73%) - Azul cielo claro #73c7e8
- *    - Color: hsl(198 100% 20%) - Azul oscuro #003e66
+ *    - Background: hsl(218 54% 31%) - Azul CUH institucional #1e4a7f
+ *    - Color: hsl(0 0% 100%) - Blanco puro #ffffff
  *    - Uso: Usuarios con acceso limitado a consulta
  * 
  * 2. MACU (Maestría)
- *    - Background: hsl(266 68% 78%) - Púrpura claro #b69edc
- *    - Color: hsl(266 60% 25%) - Púrpura oscuro #291a52
+ *    - Background: hsl(0 0% 15%) - Negro carbón #262626
+ *    - Color: hsl(0 0% 100%) - Blanco puro #ffffff
  *    - Uso: Usuarios con acceso medio a consulta
  * 
  * 3. ALL (Todos)
- *    - Background: hsl(142 50% 75%) - Verde claro #8ed9a8
- *    - Color: hsl(142 60% 20%) - Verde oscuro #145229
+ *    - Background: hsl(142 71% 45%) - Verde éxito #22c55e
+ *    - Color: hsl(0 0% 100%) - Blanco puro #ffffff
  *    - Uso: Usuarios con acceso completo a consulta
  * 
  * DIMENSIONES:
@@ -45,11 +45,14 @@ export const GradoConsultaBadge = ({ grado, className = '' }: GradoConsultaBadge
   const getGradoStyles = () => {
     switch (normalizedGrado) {
       case 'LICU':
-        return 'bg-[hsl(197,71%,73%)] text-[hsl(198,100%,20%)]';
+        // Azul CUH institucional con texto blanco
+        return 'bg-primary text-primary-foreground';
       case 'MACU':
-        return 'bg-[hsl(266,68%,78%)] text-[hsl(266,60%,25%)]';
+        // Negro carbón con texto blanco
+        return 'bg-[hsl(0,0%,15%)] text-white';
       case 'ALL':
-        return 'bg-[hsl(142,50%,75%)] text-[hsl(142,60%,20%)]';
+        // Verde éxito con texto blanco
+        return 'bg-[hsl(142,71%,45%)] text-white';
       default:
         // Fallback: estilo secondary por defecto
         return 'bg-secondary text-secondary-foreground';

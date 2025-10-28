@@ -16,10 +16,10 @@
 /* Verde Éxito */
 --success: 142 71% 45%;            /* #22c55e */
 
-/* Grados de Consulta (no en variables, en GradoConsultaBadge) */
-LICU: hsl(197,71%,73%) bg / hsl(198,100%,20%) text  /* Azul cielo */
-MACU: hsl(266,68%,78%) bg / hsl(266,60%,25%) text   /* Púrpura */
-ALL:  hsl(142,50%,75%) bg / hsl(142,60%,20%) text   /* Verde */
+/* Grados de Consulta (colores sólidos con texto blanco) */
+LICU: Azul CUH #1e4a7f (usa --primary)
+MACU: Negro carbón #262626
+ALL:  Verde éxito #22c55e (usa --success)
 
 /* Fondo y Texto */
 --background: 210 20% 98%;         /* #f7f8fa */
@@ -123,10 +123,11 @@ full: 9999px                         → Círculos, pills
 // Badge Grado de Consulta (Componente personalizado)
 import { GradoConsultaBadge } from '@/components/sige/GradoConsultaBadge';
 
-<GradoConsultaBadge grado="LICU" />  // Azul cielo - Licenciatura
-<GradoConsultaBadge grado="MACU" />  // Púrpura - Maestría  
+<GradoConsultaBadge grado="LICU" />  // Azul CUH - Licenciatura
+<GradoConsultaBadge grado="MACU" />  // Negro - Maestría  
 <GradoConsultaBadge grado="ALL" />   // Verde - Todos
 // 11px font, semibold, uppercase, tracking-wider
+// Todos con texto blanco para máximo contraste
 ```
 
 ---
